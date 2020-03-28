@@ -9,6 +9,7 @@ class PickerMediaMapper @Inject constructor() : Mapper<List<PickerMediaEntity>, 
         return entity.map {
             with(it) {
                 PickerMedia(
+                    type = type,
                     date = date,
                     uri = uri
                 )
