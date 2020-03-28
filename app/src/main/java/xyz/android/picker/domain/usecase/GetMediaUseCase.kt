@@ -5,7 +5,7 @@ import io.reactivex.rxkotlin.Flowables
 import xyz.android.picker.common.Result
 import xyz.android.picker.common.toErrorResult
 import xyz.android.picker.common.toResult
-import xyz.android.picker.domain.model.PickerMedia
+import xyz.android.picker.presentation.model.PickerMedia
 import javax.inject.Inject
 
 class GetMediaUseCase @Inject constructor(
