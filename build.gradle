@@ -27,3 +27,17 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    minSdkVersion = 23
+    targetSdkVersion = 29
+    compileSdkVersion = 29
+
+    // App dependencies
+    daggerVersion = '2.26'
+    lifecycleVersion = '2.2.0'
+    retrofitVersion = '2.7.2'
+    okhttpVersion = '4.4.0'
+    pagingVersion = '2.1.1'
+    glideVersion = '4.11.0'
+}
