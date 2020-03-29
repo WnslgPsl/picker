@@ -5,8 +5,10 @@ import xyz.android.picker.common.MediaStoreFileType
 import java.util.*
 
 data class PickerMedia(
+    val id: Long,
     val type: MediaStoreFileType,
     val date: Date,
     val uri: Uri,
-    val isSelected: Boolean = false
+    val duration: Long?,
+    var isSelected: Boolean = false
 )

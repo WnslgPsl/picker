@@ -32,7 +32,7 @@ class GetMediaUseCase @Inject constructor(
             mutableListOf<PickerMedia>().apply {
                 addAll(imageList)
                 addAll(videoList)
-                sortBy {
+                sortByDescending {
                     it.date
                 }
             }.toList().toResult()

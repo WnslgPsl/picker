@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="PickerListItemViewBinding">
+
+        <import type="android.view.View" />
+
+        <import type="xyz.android.picker.common.MediaStoreFileType" />
+
+        <import type="xyz.android.picker.common.binding.NumberAdaptersKt" />
+
+        <variable
+            name="item"
+            type="xyz.android.picker.presentation.model.PickerMedia" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadImageUri="@{item.uri}" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_16"
+            app:isSelected="@{item.isSelected}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:background="@color/black80"
+            android:visibility="@{item.type != MediaStoreFileType.VIDEO ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/ivPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_play_arrow_white_16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_4"
+                android:text="@{NumberAdaptersKt.convertSecondsToHMmSs(item.duration)}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dp_8"
+                app:layout_constraintBottom_toBottomOf="@+id/ivPlay"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivPlay"
+                app:layout_constraintTop_toTopOf="@+id/ivPlay" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

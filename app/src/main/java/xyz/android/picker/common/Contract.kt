@@ -7,6 +7,5 @@ enum class MediaStoreFileType(
     val externalContentUri: Uri
 ) {
     IMAGE(MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
-    AUDIO(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI),
     VIDEO(MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
 }

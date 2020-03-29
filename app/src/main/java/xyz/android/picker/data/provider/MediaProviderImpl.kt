@@ -20,15 +20,23 @@ class MediaProviderImpl @Inject constructor(private val context: Context) : Medi
             MediaStore.Files.FileColumns.DATE_TAKEN
         }
 
-        val projection = arrayOf(
+        val projectionItems =  mutableListOf<String>(
             MediaStore.Files.FileColumns._ID,
             MediaStore.Files.FileColumns.DISPLAY_NAME,
             date
         )
 
+        val projection = if(type != MediaStoreFileType.VIDEO) {
+            projectionItems
+        }else {
+            projectionItems.apply {
+                add(MediaStore.Files.FileColumns.DURATION)
+            }
+        }
+
         val cursor = context.contentResolver.query(
             type.externalContentUri,
-            projection,
+            projection.toTypedArray(),
             null,
             null,
             "$date DESC"
@@ -40,6 +48,7 @@ class MediaProviderImpl @Inject constructor(private val context: Context) : Medi
                 it.getColumnIndexOrThrow(date)
             val displayNameColumn =
                 it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
+            val durationColumn: Int? = if(type != MediaStoreFileType.VIDEO) null else it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DURATION)
             while (it.moveToNext()) {
                 val id = it.getLong(idColumn)
                 val dateTaken = Date(it.getLong(dateTakenColumn))
@@ -49,7 +58,11 @@ class MediaProviderImpl @Inject constructor(private val context: Context) : Medi
                     id.toString()
                 )
 
-                fileList.add(PickerMediaEntity(type, dateTaken, displayName, contentUri))
+                var duration: Long? = null
+                durationColumn?.let {column ->
+                    duration = it.getLong(column)
+                }
+                fileList.add(PickerMediaEntity(id, type, dateTaken, displayName, contentUri, duration))
             }
         }
         return fileList
