@@ -24,11 +24,9 @@ fun ImageView.setImageLoaded(uri: Uri?) {
 
 @BindingAdapter("isSelected")
 fun ImageView.setCheckBoxBackground(isSelected: Boolean) {
-    val drawable = if(isSelected) {
+    this.background = if(isSelected) {
         ContextCompat.getDrawable(context, R.drawable.ic_check_circle_white_24dp)
     }else{
         ContextCompat.getDrawable(context, R.drawable.ic_radio_button_unchecked_white_24dp)
     }
-
-    this.background = drawable
 }

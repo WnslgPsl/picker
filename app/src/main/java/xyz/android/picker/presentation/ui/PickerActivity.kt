@@ -5,17 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import kotlinx.android.synthetic.main.activity_picker.*
 import xyz.android.picker.R
+import xyz.android.picker.common.RESULT_ITEM_EXTRA
+import xyz.android.picker.common.extensions.replaceFragment
+import xyz.android.picker.common.extensions.replaceFragmentWithBackStack
 import xyz.android.picker.common.observe
 import xyz.android.picker.common.observeEvent
 import xyz.android.picker.databinding.PickerActivityBinding
 import xyz.android.picker.presentation.base.ViewBindingActivity
+import xyz.android.picker.presentation.model.PickerMedia
+import xyz.android.picker.presentation.ui.result.ResultActivity
 import javax.inject.Inject
-
 
 class PickerActivity : ViewBindingActivity<PickerActivityBinding, PickerViewModel>() {
 
@@ -26,12 +28,10 @@ class PickerActivity : ViewBindingActivity<PickerActivityBinding, PickerViewMode
     override val viewModel: PickerViewModel
         get() = ViewModelProvider(this, viewModelFactory)[PickerViewModel::class.java]
 
-    private val adapter: PickerAdapter by lazy {
-        PickerAdapter(viewModel::onClickItem, viewModel::onLongClickItem)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        replaceFragment(R.id.container, PickerFragment())
 
         TedPermission.with(this)
             .setPermissionListener(permissionListener)
@@ -39,19 +39,18 @@ class PickerActivity : ViewBindingActivity<PickerActivityBinding, PickerViewMode
             .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
             .check()
 
-        with(rvPicker) {
-            layoutManager = GridLayoutManager(context, 2)
-            adapter = this@PickerActivity.adapter
-            itemAnimator = null
+        viewModel.moveToPreview.observeEvent(this) {
+            replaceFragmentWithBackStack(
+                R.id.container,
+                PickerPreviewFragment.newInstance()
+            )
         }
 
-        viewModel.mediaItems.observe(this) {
-            adapter.loadItems(it)
-        }
-
-        viewModel.updateItem.observe(this) {
-            val (item, position) = it
-            adapter.updateItem(item, position)
+        viewModel.selectedItems.observe(this) {
+            with(Intent(this@PickerActivity, ResultActivity::class.java)) {
+                putParcelableArrayListExtra(RESULT_ITEM_EXTRA, it as ArrayList<PickerMedia>)
+                startActivity(this)
+            }
         }
 
         viewModel.actionVideo.observeEvent(this) {

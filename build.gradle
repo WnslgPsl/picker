@@ -40,4 +40,5 @@ ext {
     okhttpVersion = '4.4.0'
     pagingVersion = '2.1.1'
     glideVersion = '4.11.0'
+    permissionVersion = '2.2.3'
 }

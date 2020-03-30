@@ -1,14 +1,13 @@
 package xyz.android.picker.presentation.ui
 
-import androidx.recyclerview.widget.RecyclerView
 import xyz.android.picker.databinding.PickerListItemViewBinding
-import xyz.android.picker.presentation.model.PickerMedia
+import xyz.android.picker.presentation.base.BaseBindingViewHolder
 
 class PickerItemViewHolder(
-    private val binding: PickerListItemViewBinding,
+    binding: PickerListItemViewBinding,
     onClickItem: (Int) -> Unit,
     onLongClickItem: (Int) -> Unit
-) : RecyclerView.ViewHolder(binding.root) {
+    ) : BaseBindingViewHolder<PickerListItemViewBinding>(binding) {
 
     init {
         itemView.setOnClickListener {
@@ -21,10 +20,4 @@ class PickerItemViewHolder(
         }
     }
 
-    fun bind(item: PickerMedia) {
-        with(binding) {
-            this.item = item
-            executePendingBindings()
-        }
-    }
 }

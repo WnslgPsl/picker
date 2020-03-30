@@ -1,4 +1,4 @@
-package xyz.android.picker.common.binding
+package xyz.android.picker.common.extensions
 
 fun Long.convertSecondsToHMmSs(): String? {
 

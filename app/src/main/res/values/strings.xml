@@ -2,4 +2,7 @@
     <string name="app_name">picker</string>
 
     <string name="default_error">서버와의 연결이.....다시 시도....</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

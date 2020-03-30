@@ -9,11 +9,12 @@
 
         <import type="xyz.android.picker.common.MediaStoreFileType" />
 
-        <import type="xyz.android.picker.common.binding.NumberAdaptersKt" />
+        <import type="xyz.android.picker.common.extensions.NumberExtensionsKt" />
 
         <variable
             name="item"
             type="xyz.android.picker.presentation.model.PickerMedia" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,6 +31,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:loadImageUri="@{item.uri}" />
+
+        <View
+            app:isBackground="@{item.isSelected}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -62,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_2"
                 android:layout_marginEnd="@dimen/dp_4"
-                android:text="@{NumberAdaptersKt.convertSecondsToHMmSs(item.duration)}"
+                android:text="@{NumberExtensionsKt.convertSecondsToHMmSs(item.duration)}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dp_8"
                 app:layout_constraintBottom_toBottomOf="@+id/ivPlay"
