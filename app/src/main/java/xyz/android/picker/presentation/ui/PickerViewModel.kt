@@ -19,11 +19,8 @@ class PickerViewModel @Inject constructor(
     private val getMediaUseCase: GetMediaUseCase
 ) : BaseViewModel() {
 
-    private val _mediaItems = MutableLiveData<MutableList<PickerMedia>>()
-    val mediaItems: LiveData<MutableList<PickerMedia>> get() = _mediaItems
-
-    private val _updateItem = MutableLiveData<Pair<PickerMedia, Int>>()
-    val updateItem: LiveData<Pair<PickerMedia, Int>> get() = _updateItem
+    private val _mediaItems = MutableLiveData<List<PickerMedia>>()
+    val mediaItems: LiveData<List<PickerMedia>> get() = _mediaItems
 
     private val _actionVideo = MutableLiveData<Event<Uri>>()
     val actionVideo: LiveData<Event<Uri>> get() = _actionVideo
@@ -33,22 +30,22 @@ class PickerViewModel @Inject constructor(
 
     private val _confirm = MutableLiveData<Event<Unit>>()
 
-    val selectedItems: LiveData<List<PickerMedia>> = Transformations.map(_confirm) {
-        _mediaItems.value?.run {
-            filter {
-                it.isSelected
-            }
+    val moveToResult: LiveData<List<PickerMedia>> = Transformations.map(_confirm) {
+        selectedItemMap.map {
+            it.value
         }
     }
 
-    val selectedCount: LiveData<Int> = Transformations.map(updateItem) {
-        _mediaItems.value?.filter { pickerMedia ->
+    val selectedCount: LiveData<Int> = Transformations.map(mediaItems) {
+        it?.filter { pickerMedia ->
             pickerMedia.isSelected
         }?.count()
     }
 
     var previewUri: Uri? = null
         private set
+
+    private val selectedItemMap = LinkedHashMap<Long, PickerMedia>()
 
     fun init() {
         getMediaUseCase()
@@ -70,10 +67,16 @@ class PickerViewModel @Inject constructor(
     }
 
     fun onClickItem(position: Int) {
-        _mediaItems.value?.let {
-            it[position].isSelected = !it[position].isSelected
-            _updateItem.value = Pair(it[position], position)
+        val items = (_mediaItems.value as MutableList).toMutableList()
+        val pickerMedia = items[position].copy()
+        pickerMedia.isSelected = !pickerMedia.isSelected
+        items[position] = pickerMedia
+        if (items[position].isSelected) {
+            selectedItemMap[items[position].id] = items[position]
+        } else {
+            selectedItemMap.remove(items[position].id)
         }
+        _mediaItems.value = items
     }
 
     fun onLongClickItem(position: Int) {

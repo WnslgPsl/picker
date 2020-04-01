@@ -2,7 +2,10 @@ package xyz.android.picker.presentation.ui
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
+import android.util.LruCache
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.gun0912.tedpermission.PermissionListener
@@ -22,6 +25,8 @@ import javax.inject.Inject
 class PickerActivity : ViewBindingActivity<PickerActivityBinding, PickerViewModel>() {
 
     override fun getLayoutResId(): Int = R.layout.activity_picker
+
+    private lateinit var memoryCache: LruCache<String, Bitmap>
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -46,7 +51,7 @@ class PickerActivity : ViewBindingActivity<PickerActivityBinding, PickerViewMode
             )
         }
 
-        viewModel.selectedItems.observe(this) {
+        viewModel.moveToResult.observe(this) {
             with(Intent(this@PickerActivity, ResultActivity::class.java)) {
                 putParcelableArrayListExtra(RESULT_ITEM_EXTRA, it as ArrayList<PickerMedia>)
                 startActivity(this)

@@ -1,6 +1,7 @@
 package xyz.android.picker.presentation.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,6 +11,7 @@ import xyz.android.picker.common.GRID_LAYOUT_COUNT
 import xyz.android.picker.common.observe
 import xyz.android.picker.databinding.PickerFragmentViewBinding
 import xyz.android.picker.presentation.base.ViewBindingFragment
+import xyz.android.picker.presentation.model.PickerMedia
 import javax.inject.Inject
 
 class PickerFragment : ViewBindingFragment<PickerFragmentViewBinding, PickerViewModel>() {
@@ -35,12 +37,7 @@ class PickerFragment : ViewBindingFragment<PickerFragmentViewBinding, PickerView
         }
 
         viewModel.mediaItems.observe(this) {
-            adapter.loadItems(it)
-        }
-
-        viewModel.updateItem.observe(this) {
-            val (item, position) = it
-            adapter.updateItem(item, position)
+            adapter.submitList(it)
         }
     }
 }

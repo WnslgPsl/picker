@@ -15,14 +15,4 @@ abstract class BaseRecyclerViewAdapter<T, V: RecyclerView.ViewHolder> : Recycler
         this.items.addAll(newItems)
         notifyDataSetChanged()
     }
-
-    fun updateItem(newItem: T, position: Int) {
-        this.items[position] = newItem
-        notifyItemChanged(position)
-    }
-
-    fun insertItems(items: MutableList<T>) {
-        this.items.addAll(itemCount - 1, items)
-        notifyItemRangeChanged(itemCount, items.size)
-    }
 }
